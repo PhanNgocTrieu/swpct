@@ -29,6 +29,27 @@ public:
         }
         return -1;
     }
+
+    int faster_firstStableIndex(vector<int>& nums, int k) { // reduce one loop
+        int s = nums.size();
+        // prefix min
+        vector<int> prefixMin(s);
+        prefixMin[s - 1] = nums[s - 1];
+        for (int i = s - 2; i >= 0; --i) {
+            prefixMin[i] = min(prefixMin[i + 1], nums[i]);
+        }
+
+        // prefix max
+        vector<int> prefixMax(s);
+        prefixMax[0] = nums[0];
+        for (int i = 1; i < nums.size(); ++i) {
+            prefixMax[i] = max(prefixMax[i - 1], nums[i]);
+            if ((prefixMax[i] - prefixMin[i]) <= k) {
+                return i;
+            }
+        }
+        return -1;
+    }
 };
 
 
